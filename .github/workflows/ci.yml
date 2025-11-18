@@ -1,0 +1,59 @@
+name: EventSafe CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Show Docker Compose version
+        run: docker compose version
+
+      - name: Build and start full Docker stack
+        run: |
+          docker compose up -d
+
+      - name: Wait for API gateway on port 8080
+        run: |
+          for i in {1..30}; do
+            echo "Checking http://localhost:8080 ..."
+            # If curl returns any response (200, 404, anything), it's considered UP
+            if curl -sS http://localhost:8080 > /dev/null 2>&1; then
+              echo "Gateway is up!"
+              exit 0
+            fi
+            echo "Gateway not ready yet, retrying..."
+            sleep 5
+          done
+          echo "Gateway did not become ready in time"
+          docker compose logs api-gateway || true
+          exit 1
+
+      - name: Run pytest smoke tests
+        env:
+          BASE_URL: http://localhost:8080
+        run: |
+          pytest -v tests/test_gateway_smoke.py
+
+      - name: Stop all Docker services
+        if: always()
+        run: docker compose down
+
