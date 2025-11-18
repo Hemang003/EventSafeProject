@@ -1,0 +1,101 @@
+/* Background Gradient */
+.login-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+/* Card (Glass effect) */
+.login-card {
+  width: 900px;
+  height: 500px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px);
+  display: flex;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* LEFT SIDE */
+.login-left {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.login-logo {
+  width: 260px;
+  height: auto;
+}
+
+/* RIGHT SIDE */
+.login-right {
+  width: 50%;
+  padding: 60px 40px;
+  background: #dd3444;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-right h2 {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.login-right p {
+  opacity: 0.9;
+  margin-bottom: 20px;
+}
+
+.login-msg {
+  color: #ffe5e5;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+/* Inputs */
+.login-right input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 18px;
+  border-radius: 8px;
+  border: none;
+  font-size: 15px;
+}
+
+/* Button */
+.login-btn {
+  width: 100%;
+  padding: 16px;
+  background: #06254d;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.login-btn:hover {
+  background: #0a345f;
+}
+
+/* Footer */
+.login-footer {
+  margin-top: 15px;
+}
+
+.login-footer a {
+  color: white;
+  text-decoration: underline;
+  font-weight: bold;
+}

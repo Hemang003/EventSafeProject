@@ -1,0 +1,26 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: events-db
+    environment:
+      POSTGRES_USER: event_service_user
+      POSTGRES_PASSWORD: event_service_pass
+      POSTGRES_DB: event_service_db
+    ports:
+      - "5434:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U event_service_user -d event_service_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  eventsvc:
+    build: .
+    container_name: eventsvc-app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      EVENTS_DATABASE_URL: postgresql+psycopg2://event_service_user:event_service_pass@db:5432/event_service_db
+    ports:
+      - "6001:6000"

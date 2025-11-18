@@ -1,0 +1,124 @@
+version: "3.9"
+
+services:
+  # ==========================
+  # Databases
+  # ==========================
+
+  # --- User Service DB ---
+  users_db:
+    image: postgres:16-alpine
+    container_name: users-db
+    environment:
+      POSTGRES_USER: user_service_user
+      POSTGRES_PASSWORD: user_service_pass
+      POSTGRES_DB: user_service_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user_service_user -d user_service_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "5433:5432"   # optional (for connecting from DB tools)
+
+  # --- Event Service DB ---
+  events_db:
+    image: postgres:16-alpine
+    container_name: events-db
+    environment:
+      POSTGRES_USER: event_service_user
+      POSTGRES_PASSWORD: event_service_pass
+      POSTGRES_DB: event_service_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U event_service_user -d event_service_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "5434:5432"   # optional
+      
+
+  # --- Booking Service DB ---
+  bookings_db:
+    image: postgres:16-alpine
+    container_name: bookings-db
+    environment:
+      POSTGRES_USER: booking_service_user
+      POSTGRES_PASSWORD: booking_service_pass
+      POSTGRES_DB: booking_service_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U booking_service_user -d booking_service_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "5435:5432"   # optional
+
+  # --- Redis for seat locking ---
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"   # optional (for debugging with redis-cli)
+
+  # ==========================
+  # Backend services
+  # ==========================
+
+  # --- User Service API ---
+  usersvc:
+    build: ./usersvc
+    container_name: usersvc
+    depends_on:
+      users_db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+psycopg2://user_service_user:user_service_pass@users_db:5432/user_service_db
+      JWT_SECRET_KEY: "change-this-secret-later"
+      FLASK_ENV: production
+    expose:
+      - "5000"   # only visible inside Docker network
+
+  # --- Event Service API ---
+  eventsvc:
+    build: ./eventsvc
+    # container_name: eventsvc
+    depends_on:
+      events_db:
+        condition: service_healthy
+    environment:
+      EVENTS_DATABASE_URL: postgresql+psycopg2://event_service_user:event_service_pass@events_db:5432/event_service_db
+    expose:
+      - "6000"
+
+  # --- Booking Service API ---
+  bookingsvc:
+    build: ./bookingsvc
+    container_name: bookingsvc
+    depends_on:
+      bookings_db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    environment:
+      BOOKINGS_DATABASE_URL: postgresql+psycopg2://booking_service_user:booking_service_pass@bookings-db:5432/booking_service_db
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      JWT_SECRET_KEY: "change-this-secret-later"   # must match usersvc
+    expose:
+      - "7000"
+
+  # ==========================
+  # API Gateway (Nginx)
+  # ==========================
+  gateway:
+    image: nginx:1.25-alpine
+    container_name: api-gateway
+    depends_on:
+      - usersvc
+      - eventsvc
+      - bookingsvc
+    ports:
+      - "8080:80"    # main entry point
+    volumes:
+      - ./gateway/nginx.conf:/etc/nginx/nginx.conf:ro

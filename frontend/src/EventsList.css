@@ -1,0 +1,624 @@
+/* ===== GLOBAL COLORS ===== */
+:root {
+  --bms-red: #f84464;
+  --bms-dark: #222539;
+  --bms-text: #1f2533;
+  --bms-gray: #7f7f7f;
+  --bms-bg: #f5f5f5;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  background-color: var(--bms-bg);
+  overflow-x: hidden;
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+/* ===== SHARED CONTAINER (EVENT AREA) ===== */
+/* This controls margin + width of hero + event lists */
+.bms-container {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ===== LOGO & HEADER ===== */
+
+.bms-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 32px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.bms-header-left {
+  display: flex;
+  align-items: center;
+}
+
+/* Bigger logo so it is visible */
+.logo-imgs {
+  height: 120px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* Search box in header */
+.bms-search-wrap {
+  flex: 1;
+  padding: 0 32px;
+}
+
+.bms-search-input {
+  width: 100%;
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 6px;
+  border: 1px solid #d3d3d3;
+  font-size: 14px;
+  outline: none;
+}
+
+.bms-search-input:focus {
+  border-color: var(--bms-red);
+}
+
+/* Right side (My Events | Hi, heet | Logout) */
+.bms-header-right {
+  display: flex;
+  align-items: center;
+}
+
+.layout-topnav-links {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 14px;
+}
+
+.layout-topnav-links a {
+  text-decoration: none;
+  color: var(--bms-text);
+}
+
+.layout-topnav-links a:hover {
+  color: var(--bms-red);
+}
+
+.layout-topnav-user {
+  color: var(--bms-gray);
+  font-size: 13px;
+}
+
+.layout-topnav-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--bms-text);
+}
+
+/* ===== SUB NAVBAR ===== */
+/* Movies | Concerts | Sports | Activities */
+
+.bms-subnav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 32px;
+  background: rgba(230, 57, 70, 0.9);
+  border-bottom: 1px solid rgba(230, 57, 70, 0.9);
+  font-size: 14px;
+}
+
+.bms-subnav-left,
+.bms-subnav-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.bms-subnav-link {
+  text-decoration: none;
+  color: #FFF;
+  cursor: pointer;
+}
+
+.bms-subnav-link:hover {
+  color: var(--bms-BLUE);
+}
+
+.bms-subnav-small-link {
+  color: #FFF;
+  cursor: pointer;
+}
+
+/* ===== HERO (BLUE SECTION) ===== */
+
+.bms-hero {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.bms-hero .hero-inner {
+  height: 260px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #0056e0, #0a84ff);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  text-align: center;
+  padding: 0 32px;
+}
+
+.bms-hero h1 {
+  margin: 0 0 8px;
+  font-size: 26px;
+}
+/* ===== HERO CAROUSEL ===== */
+
+.bms-hero {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.hero-carousel {
+  position: relative;
+  height: 260px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #0056e0; /* fallback while loading */
+}
+
+/* Each slide */
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  background:rgba(230, 57, 70, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  text-align: center;
+  padding: 0 32px;
+}
+
+.hero-slide--active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.hero-slide-inner {
+  max-width: 420px;
+}
+
+.hero-slide-inner h1 {
+  margin: 0 0 8px;
+  font-size: 26px;
+}
+
+.hero-slide-inner p {
+  margin: 0 0 16px;
+  font-size: 15px;
+}
+
+/* CTA button inside slide */
+.hero-btn {
+  padding: 8px 18px;
+  border-radius: 4px;
+  border: none;
+  background: #ffffff;
+  color: #0056e0;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Arrows */
+.hero-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: rgba(0, 0, 0, 0.35);
+  color: #ffffff;
+  font-size: 24px;
+  width: 32px;
+  height: 52px;
+  cursor: pointer;
+}
+
+.hero-arrow--left {
+  left: 0;
+}
+
+.hero-arrow--right {
+  right: 0;
+}
+
+/* Dots */
+.hero-dots {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+}
+
+.hero-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+}
+
+.hero-dot--active {
+  background: #ffffff;
+}
+
+.bms-hero p {
+  margin: 0 0 16px;
+  font-size: 15px;
+}
+
+/* Hero button */
+.hero-btn {
+  padding: 8px 18px;
+  border-radius: 4px;
+  border: none;
+  background: #ffffff;
+  color: #0056e0;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ===== EVENT SECTIONS (Movies / Concerts / etc.) ===== */
+
+.bms-section {
+  margin: 36px 0;
+}
+
+.bms-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bms-section-header h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+/* "See All" on right side */
+.bms-seeall-btn {
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  color: var(--bms-red);
+  cursor: pointer;
+}
+
+/* ===== EVENT CARDS GRID ===== */
+/* This is the part you liked – keeping it the same */
+
+.bms-cards-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 26px;
+  margin-top: 20px;
+}
+
+.bms-card {
+  border-radius: 8px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  background: transparent;
+}
+
+.bms-card-img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  display: block;
+}
+
+.bms-card-info {
+  padding: 10px 4px;
+}
+
+.bms-card-info h3 {
+  margin: 0 0 4px;
+  font-size: 15px;
+}
+
+.bms-card-info p {
+  margin: 0 0 3px;
+  font-size: 13px;
+}
+
+.bms-card-info .date {
+  font-size: 12px;
+  color: #888;
+}
+
+/* ===== FOOTER ===== */
+
+.bms-footer {
+  text-align: center;
+  padding: 40px 0 24px;
+  color: #777;
+  font-size: 13px;
+}
+/* ===================================================================== */
+/*                    EVENT DETAIL / BOOKING PAGE                        */
+/* ===================================================================== */
+
+.event-page {
+  background-color: #111;
+  color: #fff;
+  min-height: 100vh;
+}
+
+/* ---- HERO (dark area with poster + info) ---- */
+
+.event-hero-wrapper {
+  background-color: #111;
+  color: #fff;
+}
+
+.event-hero {
+  position: relative;
+  padding: 32px 0 48px;
+  overflow: hidden;
+}
+
+.event-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(5px);
+  transform: scale(1.05);
+  opacity: 0.5;
+}
+
+.event-hero-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    #111 15%,
+    rgba(17, 17, 17, 0.8) 45%,
+    rgba(17, 17, 17, 0.95) 80%
+  );
+}
+
+.event-hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.event-hero-grid {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 32px;
+  align-items: flex-start;
+}
+
+/* Poster card on left */
+
+.event-hero-poster-card {
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.event-hero-poster {
+  width: 100%;
+  height: 360px;
+  object-fit: cover;
+  display: block;
+}
+
+.event-hero-poster-footer {
+  text-align: center;
+  padding: 8px 0;
+  font-size: 12px;
+  color: #bbbbbb;
+}
+
+/* Info on right */
+
+.event-hero-info {
+  color: #ffffff;
+}
+
+.event-title {
+  margin: 0 0 12px;
+  font-size: 32px;
+  font-weight: 600;
+}
+
+.event-meta-main {
+  font-size: 14px;
+  color: #d3d3d3;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.event-meta-line span {
+  margin-right: 4px;
+}
+
+/* Booking box */
+
+.event-book-box {
+  margin-top: 22px;
+  padding: 16px 18px;
+ 
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.event-seats-control {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.event-seats-label {
+  font-size: 13px;
+  color: #cccccc;
+}
+
+.event-seats-input {
+  width: 70px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  border: 1px solid #555;
+  background: #111;
+  color: #fff;
+}
+
+/* Book button */
+
+.event-book-btn {
+  padding: 10px 26px;
+  border-radius: 4px;
+  border: none;
+  background: var(--bms-red);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.event-book-btn:disabled {
+  background: #777;
+  cursor: not-allowed;
+}
+
+.event-msg {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #ffd37a;
+}
+
+/* ---- BODY (about + related) ---- */
+
+.event-body-shell {
+  background-color: #ffffff;
+  color: #000;
+  padding: 32px 0 40px;
+}
+
+.event-body {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.event-about h2,
+.event-related h2 {
+  margin: 0 0 10px;
+  font-size: 20px;
+}
+
+.event-about p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* "You may also like" reuses bms-cards-row / bms-card styles */
+.event-related .bms-cards-row {
+  margin-top: 14px;
+}
+/* Price note under seats */
+.event-price-note {
+  font-size: 12px;
+  color: #bbbbbb;
+}
+
+/* Two buttons side-by-side */
+.event-book-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Lock button – dark outline style */
+.event-lock-btn {
+  padding: 10px 18px;
+  border-radius: 4px;
+  border: 1px solid #888;
+  background: #222;
+  color: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.event-lock-btn:disabled {
+  background: #444;
+  border-color: #555;
+  cursor: not-allowed;
+}
+
+/* Book button – primary red (you already had event-book-btn basic styles) */
+.event-book-btn {
+  padding: 10px 26px;
+  border-radius: 4px;
+  border: none;
+  background: var(--bms-red);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.event-book-btn:disabled {
+  background: #777;
+  cursor: not-allowed;
+}
+
+/* Footer at bottom of booking page */
+.event-footer {
+  background: #101010;
+  color: #aaaaaa;
+  text-align: center;
+  padding: 16px 0;
+  font-size: 13px;
+}
